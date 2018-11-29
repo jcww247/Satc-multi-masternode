@@ -193,6 +193,13 @@ echo "shekel-cli -conf=$BASE/multinode/SAP_${NUM}/shekel.conf -datadir=$BASE/mul
 
 echo "echo '====================================================${NUM}========================================================================'" >> mn_getinfo.sh
 echo "shekel-cli -conf=$BASE/multinode/SAP_${NUM}/shekel.conf -datadir=$BASE/multinode/SAP_${NUM} getinfo" >> mn_getinfo.sh
+# When Blocks are synched, it copies the wallet into the remaining Mns Wallet automatically
+echo "echo 'stop MN${NUM}'"
+    echo "shekel-cli -conf=$BASE/multinode/SAP_${NUM}/shekel.conf -datadir=$BASE/multinode/SAP_${NUM} stop" >> mn_sync_block.sh
+    if (( ${NUM} > 1)) ; then
+        echo "echo 'copy MN1 blocks folder into masternode ${NUM}'" >> mn_sync_block.sh
+        echo "sudo yes | cp -R $BASE/multinode/SAP_1/blocks/ $BASE/multinode/SAP_${NUM}/blocks" >> mn_sync_block.sh
+    fi
 
 fi
 done
@@ -207,6 +214,8 @@ cat mn_getinfo.sh >> /usr/local/bin/mn_getinfo.sh
 cat mn_status.sh >> /usr/local/bin/mn_status.sh
 chown -R sap:sap /home/sap/multinode
 chmod -R g=u /home/sap/multinode
+#command below starts all MNs, so it creates requirements per user. Need to shut it off manually to prevent high cpu
+./start_multinode.sh
 
 echo 'run start_multinode.sh to start the multinode'
 echo 'run stop_multinode.sh to stop it'
