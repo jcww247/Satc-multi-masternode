@@ -94,8 +94,8 @@ else
     touch /var/swap.img
     chmod 600 swap.img
     dd if=/dev/zero of=/var/swap.img bs=1024k count=5000
-    mkswap /var/swap.img 5> /dev/null
-    swapon /var/swap.img 5> /dev/null
+    mkswap /var/swap.img 2> /dev/null
+    swapon /var/swap.img 2> /dev/null
     if [ $? -eq 0 ]; then
         echo '/var/swap.img none swap sw 0 0' >> /etc/fstab
         echo -e "${GREEN}Swap was created successfully!${NC} \n"
