@@ -86,16 +86,16 @@ fi
 	sudo apt-get install -y unzip libzmq3-dev build-essential libtool autoconf automake libboost-dev libssl-dev libboost-all-dev libqrencode-dev libminiupnpc-dev libboost-system1.58.0 libboost1.58-all-dev libdb4.8++ libdb4.8 libdb4.8-dev libdb4.8++-dev libevent-pthreads-2.0-5
 	sudo apt-get update
 
-#Create 2GB swap file
+#Create 5GB swap file
 if grep -q "SwapTotal" /proc/meminfo; then
     echo -e "${GREEN}Skipping disk swap configuration...${NC} \n"
 else
-    echo -e "${YELLOW}Creating 2GB disk swap file. \nThis may take a few minutes!${NC} \a"
+    echo -e "${YELLOW}Creating 5GB disk swap file. \nThis may take a few minutes!${NC} \a"
     touch /var/swap.img
     chmod 600 swap.img
-    dd if=/dev/zero of=/var/swap.img bs=1024k count=2000
-    mkswap /var/swap.img 2> /dev/null
-    swapon /var/swap.img 2> /dev/null
+    dd if=/dev/zero of=/var/swap.img bs=1024k count=5000
+    mkswap /var/swap.img 5> /dev/null
+    swapon /var/swap.img 5> /dev/null
     if [ $? -eq 0 ]; then
         echo '/var/swap.img none swap sw 0 0' >> /etc/fstab
         echo -e "${GREEN}Swap was created successfully!${NC} \n"
