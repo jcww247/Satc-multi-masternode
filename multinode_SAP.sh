@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BASE="/home/sap"
-PORT=8120
+PORT=5500
 # Execute options
 ARGS=$(getopt -o "hp:n:c:r:wsudx" -l "help,count:,net" -n "multinode_SAP.sh" -- "$@");
 
@@ -106,20 +106,20 @@ else
 fi
 
 echo -e "Installing and setting up firewall to allow ingress on port 8120"
-  ufw allow 8120/tcp comment "BitcoinAdult MN port" >/dev/null
+  ufw allow 5500/tcp comment "Shekel-Jew MN port" >/dev/null
   ufw allow ssh comment "SSH" >/dev/null 2>&1
   ufw limit ssh/tcp >/dev/null 2>&1
   ufw default allow outgoing >/dev/null 2>&1
   echo "y" | ufw enable >/dev/null 2>&1
 
 #Download Latest
-echo 'Downloading latest version:  wget https://github.com/zoldur/BitcoinAdult/releases/download/v1.0.0.0/BitcoinAdult.tar.gz' &&  wget https://github.com/zoldur/BitcoinAdult/releases/download/v1.0.0.0/BitcoinAdult.tar.gz
+echo 'Downloading latest version:  wget https://github.com/shekeltechnologies/JewNew/releases/download/1.4.0/shekel-1.4.0-x86_64-linux.tar.gz' &&  wget https://github.com/shekeltechnologies/JewNew/releases/download/1.4.0/shekel-1.4.0-x86_64-linux.tar.gz
 			
 #Install Latest
 echo '==========================================================================='
-echo 'Extract new methuselah: \n# tar -xf BitcoinAdult.tar.gz -C /usr/local/bin' && tar -xf BitcoinAdult.tar.gz -C /usr/local/bin
+echo 'Extract new methuselah: \n# tar -xf shekel-1.4.0-x86_64-linux.tar.gz -C /usr/local/bin' && tar -xf shekel-1.4.0-x86_64-linux.tar.gz -C /usr/local/bin
 
-rm BitcoinAdult.tar.gz
+rm shekel-1.4.0-x86_64-linux.tar.gz
 
 # our new mnode unpriv user acc is added
 if id "sap" >/dev/null 2>&1; then
@@ -151,7 +151,7 @@ for NUM in $(seq 1 ${count}); do
     if [ ! -d "$BASE"/multinode/SAP_"${NUM}" ]; then
         echo "creating data directory $BASE/multinode/SAP_${NUM}" 
         mkdir -p "$BASE"/multinode/SAP_"${NUM}" 
-		#Generating Random Password for BitcoinAdultd JSON RPC
+		#Generating Random Password for Shekel/Jew JSON RPC
 		USER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 		USERPASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 		read -e -p "MasterNode Key for SAP_"${NUM}": " MKey
@@ -165,31 +165,31 @@ maxconnections=256
 masternode=1
 masternodeprivkey=$MKey
 promode=1
-addnode=46.101.197.9
-addnode=188.166.62.110
-addnode=167.99.204.8
-addnode=194.135.91.42
-addnode=178.62.18.29
-addnode=49.197.191.209
-addnode=209.250.237.248
-addnode=173.199.122.43
-addnode=104.238.167.234
-addnode=144.202.54.84
-addnode=45.32.251.223
-addnode=206.189.138.10
-addnode=108.61.148.98" |sudo tee -a "$BASE"/multinode/SAP_"${NUM}"/BitcoinAdult.conf >/dev/null
-echo 'bind=192.168.1.'"${NUM}"':'"$PORT" >> "$BASE"/multinode/SAP_"${NUM}"/BitcoinAdult.conf
-echo 'rpcport=8119'"${NUM}" >> "$BASE"/multinode/SAP_"${NUM}"/BitcoinAdult.conf
+addnode=188.240.24.236
+addnode=60.51.32.209
+addnode=206.189.104.231
+addnode=80.211.143.148
+addnode=202.182.109.8
+addnode=199.247.21.147	
+addnode=209.250.251.243
+addnode=45.76.61.85
+addnode=45.77.179.151
+addnode=185.30.238.122
+addnode=95.216.156.83
+addnode=62.75.206.169
+addnode=84.131.180.166" |sudo tee -a "$BASE"/multinode/SAP_"${NUM}"/shekel.conf >/dev/null
+echo 'bind=192.168.1.'"${NUM}"':'"$PORT" >> "$BASE"/multinode/SAP_"${NUM}"/shekel.conf
+echo 'rpcport=8119'"${NUM}" >> "$BASE"/multinode/SAP_"${NUM}"/shekel.conf
 
 echo 'ip addr del 192.168.1.'"${NUM}"'/32 dev '"$dev2"':'"${NUM}" >> start_multinode.sh
 echo 'ip addr add 192.168.1.'"${NUM}"'/32 dev '"$dev2"':'"${NUM}" >> start_multinode.sh
-echo "runuser -l sap -c 'BitcoinAdultd -daemon -pid=$BASE/multinode/SAP_${NUM}/BitcoinAdult.pid -conf=$BASE/multinode/SAP_${NUM}/BitcoinAdult.conf -datadir=$BASE/multinode/SAP_${NUM}'" >> start_multinode.sh
+echo "runuser -l sap -c 'shekeld -daemon -pid=$BASE/multinode/SAP_${NUM}/shekel.pid -conf=$BASE/multinode/SAP_${NUM}/shekel.conf -datadir=$BASE/multinode/SAP_${NUM}'" >> start_multinode.sh
 
 echo 'ip addr del 192.168.1.'"${NUM}"'/32 dev '"$dev2"':'"${NUM}" >> stop_multinode.sh
-echo "BitcoinAdult-cli -conf=$BASE/multinode/SAP_${NUM}/BitcoinAdult.conf -datadir=$BASE/multinode/SAP_${NUM} stop" >> stop_multinode.sh
+echo "shekel-cli -conf=$BASE/multinode/SAP_${NUM}/shekel.conf -datadir=$BASE/multinode/SAP_${NUM} stop" >> stop_multinode.sh
 
 echo "echo '====================================================${NUM}========================================================================'" >> mn_status.sh
-echo "BitcoinAdult-cli -conf=$BASE/multinode/SAP_${NUM}/BitcoinAdult.conf -datadir=$BASE/multinode/SAP_${NUM} masternode status" >> mn_status.sh
+echo "shekel-cli -conf=$BASE/multinode/SAP_${NUM}/shekel.conf -datadir=$BASE/multinode/SAP_${NUM} masternode status" >> mn_status.sh
 
 echo "echo '====================================================${NUM}========================================================================'" >> mn_getinfo.sh
 echo "BitcoinAdult-cli -conf=$BASE/multinode/SAP_${NUM}/BitcoinAdult.conf -datadir=$BASE/multinode/SAP_${NUM} getinfo" >> mn_getinfo.sh
