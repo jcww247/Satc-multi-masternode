@@ -37,5 +37,5 @@ script base on many individuals that have helped with this script.
 # Donation
 MAG address: Coming Soon
 
-# The Person Who Helped has BTC Here till i get mine :)
+# Be Generours, Share More to Earn More :)
 BTC  address: 
