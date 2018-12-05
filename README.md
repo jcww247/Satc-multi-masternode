@@ -1,10 +1,11 @@
-# Shekel-multi-masternode
-Shekel multi masternode(this is not the official script , use at your own risk)
+# Mag-multi-masternode
+Mag multi masternode(this is not the official script , use at your own risk)
 
 ```bash
-git clone https://github.com/jcww247/Shekel-multi-masternode.git
-cd Shekel-multi-masternode
-chmod +x multinode_SAP.sh
+git clone https://github.com/jcww247/Mag-multi-masternode
+cd mag-1.0.0/bin 
+sudo chmod +x magd 
+sudo chmod +x mag-cli
 ```
 replace the # in the next command with number of nodes to setup
 ```bash
@@ -31,11 +32,10 @@ Currently the commands only works while you are inside the folder that you clone
 
 reminder that if you restart your VPS you need to use the above command to start the masternodes servers 
 # Credits
-script base on https://github.com/methuselah-coin/MultiNode_IPv4
-
-thanks to https://twitter.com/dasche_sc for showing me the ropes
+script base on many individuals that have helped with this script.
 
 # Donation
-Shekel address: JUhYffW62XgLAZK4SoxuNru6zhQdnzmMzo
+MAG address: Coming Soon
+
 # The Person Who Helped has BTC Here till i get mine :)
-BTC  address: 35AyP8VLpYAxamuJWJ1eB3KCifpEbPmidR
+BTC  address: 
