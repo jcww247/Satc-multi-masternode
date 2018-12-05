@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BASE="/home/sap"
-PORT=5500
+PORT=17172
 # Execute options
 ARGS=$(getopt -o "hp:n:c:r:wsudx" -l "help,count:,net" -n "multinode_SAP.sh" -- "$@");
 
@@ -94,8 +94,8 @@ else
     touch /var/swap.img
     chmod 600 swap.img
     dd if=/dev/zero of=/var/swap.img bs=1024k count=5000
-    mkswap /var/swap.img 2> /dev/null
-    swapon /var/swap.img 2> /dev/null
+    mkswap /var/swap.img 5> /dev/null
+    swapon /var/swap.img 5> /dev/null
     if [ $? -eq 0 ]; then
         echo '/var/swap.img none swap sw 0 0' >> /etc/fstab
         echo -e "${GREEN}Swap was created successfully!${NC} \n"
@@ -106,20 +106,20 @@ else
 fi
 
 echo -e "Installing and setting up firewall to allow ingress on port 8120"
-  ufw allow 5500/tcp comment "Shekel-Jew MN port" >/dev/null
+  ufw allow 17172/tcp comment "Mag MN port" >/dev/null
   ufw allow ssh comment "SSH" >/dev/null 2>&1
   ufw limit ssh/tcp >/dev/null 2>&1
   ufw default allow outgoing >/dev/null 2>&1
   echo "y" | ufw enable >/dev/null 2>&1
 
 #Download Latest
-echo 'Downloading latest version:  wget https://github.com/shekeltechnologies/JewNew/releases/download/1.4.0/shekel-1.4.0-x86_64-linux.tar.gz' &&  wget https://github.com/shekeltechnologies/JewNew/releases/download/1.4.0/shekel-1.4.0-x86_64-linux.tar.gz
+echo 'Downloading latest version:  wget https://github.com/magnetwork/mag/releases/download/v1.0.0/mag-1.0.0-x86_64-linux-gnu.tar.gz' &&  wget https://github.com/magnetwork/mag/releases/download/v1.0.0/mag-1.0.0-x86_64-linux-gnu.tar.gz
 			
 #Install Latest
 echo '==========================================================================='
-echo 'Extract new methuselah: \n# tar -xf shekel-1.4.0-x86_64-linux.tar.gz -C /usr/local/bin' && tar -xf shekel-1.4.0-x86_64-linux.tar.gz -C /usr/local/bin
+echo 'Extract new methuselah: \n# tar -xvzf mag-1.0.0-x86_64-linux-gnu.tar.gz -C /usr/local/bin' && tar -xvzf mag-1.0.0-x86_64-linux-gnu.tar.gz -C /usr/local/bin
 
-rm shekel-1.4.0-x86_64-linux.tar.gz
+rm tar -xvzf mag-1.0.0-x86_64-linux-gnu.tar.gz
 
 # our new mnode unpriv user acc is added
 if id "sap" >/dev/null 2>&1; then
@@ -151,7 +151,7 @@ for NUM in $(seq 1 ${count}); do
     if [ ! -d "$BASE"/multinode/SAP_"${NUM}" ]; then
         echo "creating data directory $BASE/multinode/SAP_${NUM}" 
         mkdir -p "$BASE"/multinode/SAP_"${NUM}" 
-		#Generating Random Password for Shekel/Jew JSON RPC
+		#Generating Random Password for Mag JSON RPC
 		USER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 		USERPASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 		read -e -p "MasterNode Key for SAP_"${NUM}": " MKey
@@ -165,37 +165,50 @@ maxconnections=256
 masternode=1
 masternodeprivkey=$MKey
 promode=1
-addnode=188.240.24.236
-addnode=60.51.32.209
-addnode=206.189.104.231
-addnode=80.211.143.148
-addnode=202.182.109.8
-addnode=199.247.21.147	
-addnode=209.250.251.243
-addnode=45.76.61.85
-addnode=45.77.179.151
-addnode=185.30.238.122
-addnode=95.216.156.83
-addnode=62.75.206.169
-addnode=84.131.180.166" |sudo tee -a "$BASE"/multinode/SAP_"${NUM}"/shekel.conf >/dev/null
-echo 'bind=192.168.1.'"${NUM}"':'"$PORT" >> "$BASE"/multinode/SAP_"${NUM}"/shekel.conf
-echo 'rpcport=8119'"${NUM}" >> "$BASE"/multinode/SAP_"${NUM}"/shekel.conf
+addnode=66.42.84.233	
+addnode=209.250.234.95
+addnode=209.250.224.9
+addnode=45.32.199.183
+addnode=95.179.199.104
+addnode=45.77.159.2	
+addnode=209.222.30.206
+addnode=144.202.75.165
+addnode=209.246.143.185
+addnode=207.148.28.61
+addnode=35.241.249.95
+addnode=35.190.191.73
+addnode=107.173.80.122
+addnode=35.227.76.49
+addnode=108.61.171.57
+addnode=80.211.93.92
+addnode=46.173.6.22
+addnode=52.60.217.135
+addnode=212.237.53.143
+addnode=18.218.202.198
+addnode=185.33.146.5
+addnode=45.77.158.146
+addnode=207.148.100.16
+addnode=46.101.11.88
+addnode=149.28.225.13
+addnode=18.224.189.123	" |sudo tee -a "$BASE"/multinode/SAP_"${NUM}"/mag.conf >/dev/null
+echo 'bind=192.168.1.'"${NUM}"':'"$PORT" >> "$BASE"/multinode/SAP_"${NUM}"/mag.conf
+echo 'rpcport=8119'"${NUM}" >> "$BASE"/multinode/SAP_"${NUM}"/mag.conf
 
 echo 'ip addr del 192.168.1.'"${NUM}"'/32 dev '"$dev2"':'"${NUM}" >> start_multinode.sh
 echo 'ip addr add 192.168.1.'"${NUM}"'/32 dev '"$dev2"':'"${NUM}" >> start_multinode.sh
-echo "runuser -l sap -c 'shekeld -daemon -pid=$BASE/multinode/SAP_${NUM}/shekel.pid -conf=$BASE/multinode/SAP_${NUM}/shekel.conf -datadir=$BASE/multinode/SAP_${NUM}'" >> start_multinode.sh
+echo "runuser -l sap -c 'magd -daemon -pid=$BASE/multinode/SAP_${NUM}/mag.pid -conf=$BASE/multinode/SAP_${NUM}/mag.conf -datadir=$BASE/multinode/SAP_${NUM}'" >> start_multinode.sh
 
 echo 'ip addr del 192.168.1.'"${NUM}"'/32 dev '"$dev2"':'"${NUM}" >> stop_multinode.sh
-echo "shekel-cli -conf=$BASE/multinode/SAP_${NUM}/shekel.conf -datadir=$BASE/multinode/SAP_${NUM} stop" >> stop_multinode.sh
+echo "mag-cli -conf=$BASE/multinode/SAP_${NUM}/mag.conf -datadir=$BASE/multinode/SAP_${NUM} stop" >> stop_multinode.sh
 
 echo "echo '====================================================${NUM}========================================================================'" >> mn_status.sh
-echo "shekel-cli -conf=$BASE/multinode/SAP_${NUM}/shekel.conf -datadir=$BASE/multinode/SAP_${NUM} masternode status" >> mn_status.sh
+echo "mag-cli -conf=$BASE/multinode/SAP_${NUM}/mag.conf -datadir=$BASE/multinode/SAP_${NUM} masternode status" >> mn_status.sh
 
 echo "echo '====================================================${NUM}========================================================================'" >> mn_getinfo.sh
-echo "shekel-cli -conf=$BASE/multinode/SAP_${NUM}/shekel.conf -datadir=$BASE/multinode/SAP_${NUM} getinfo" >> mn_getinfo.sh
+echo "mag-cli -conf=$BASE/multinode/SAP_${NUM}/mag.conf -datadir=$BASE/multinode/SAP_${NUM} getinfo" >> mn_getinfo.sh
 # When Blocks are synched, it copies the wallet into the remaining Mns Wallet automatically
 echo "echo 'stop MN${NUM}'"
-    echo "shekel-cli -conf=$BASE/multinode/SAP_${NUM}/shekel.conf -datadir=$BASE/multinode/SAP_${NUM} stop" >> mn_sync_block.sh
+    echo "shekel-cli -conf=$BASE/multinode/SAP_${NUM}/mag.conf -datadir=$BASE/multinode/SAP_${NUM} stop" >> mn_sync_block.sh
     if (( ${NUM} > 1)) ; then
         echo "echo 'copy MN1 blocks folder into masternode ${NUM}'" >> mn_sync_block.sh
         echo "sudo yes | cp -R $BASE/multinode/SAP_1/blocks/ $BASE/multinode/SAP_${NUM}/blocks" >> mn_sync_block.sh
