@@ -208,7 +208,7 @@ echo "echo '====================================================${NUM}==========
 echo "mag-cli -conf=$BASE/multinode/SAP_${NUM}/mag.conf -datadir=$BASE/multinode/SAP_${NUM} getinfo" >> mn_getinfo.sh
 # When Blocks are synched, it copies the wallet into the remaining Mns Wallet automatically
 echo "echo 'stop MN${NUM}'"
-    echo "shekel-cli -conf=$BASE/multinode/SAP_${NUM}/mag.conf -datadir=$BASE/multinode/SAP_${NUM} stop" >> mn_sync_block.sh
+    echo "mag-cli -conf=$BASE/multinode/SAP_${NUM}/mag.conf -datadir=$BASE/multinode/SAP_${NUM} stop" >> mn_sync_block.sh
     if (( ${NUM} > 1)) ; then
         echo "echo 'copy MN1 blocks folder into masternode ${NUM}'" >> mn_sync_block.sh
         echo "sudo yes | cp -R $BASE/multinode/SAP_1/blocks/ $BASE/multinode/SAP_${NUM}/blocks" >> mn_sync_block.sh
