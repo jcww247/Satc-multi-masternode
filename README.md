@@ -2,7 +2,7 @@
 Mag multi masternode(this is not the official script , use at your own risk)
 
 ```bash
-git clone https://github.com/jcww247/Mag-multi-masternode
+git clone https://github.com/jcww247/Satc-multi-masternode
 cd mag-1.0.0/bin 
 sudo chmod +x magd 
 sudo chmod +x mag-cli
