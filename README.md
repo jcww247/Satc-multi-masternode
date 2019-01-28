@@ -3,9 +3,7 @@ Mag multi masternode(this is not the official script , use at your own risk)
 
 ```bash
 git clone https://github.com/jcww247/Satc-multi-masternode
-cd mag-1.0.0/bin 
-sudo chmod +x magd 
-sudo chmod +x mag-cli
+chmod +x satc 
 ```
 replace the # in the next command with number of nodes to setup
 ```bash
