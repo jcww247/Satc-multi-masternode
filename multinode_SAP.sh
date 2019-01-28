@@ -106,20 +106,20 @@ else
 fi
 
 echo -e "Installing and setting up firewall to allow ingress on port 8120"
-  ufw allow 17172/tcp comment "Mag MN port" >/dev/null
+  ufw allow 17172/tcp comment "SATC MN port" >/dev/null
   ufw allow ssh comment "SSH" >/dev/null 2>&1
   ufw limit ssh/tcp >/dev/null 2>&1
   ufw default allow outgoing >/dev/null 2>&1
   echo "y" | ufw enable >/dev/null 2>&1
 
 #Download Latest
-echo 'Downloading latest version:  wget https://github.com/magnetwork/mag/releases/download/v1.0.0/mag-1.0.0-x86_64-linux-gnu.tar.gz' &&  wget https://github.com/magnetwork/mag/releases/download/v1.0.0/mag-1.0.0-x86_64-linux-gnu.tar.gz
+echo 'Downloading latest version:  wget https://github.com/SatoshiCoin-Crypto/SatoshiCoin-rebrand/releases/download/v1.0.2.1/ubuntu16.04-daemon.zip.tar.gz' &&  wget https://github.com/SatoshiCoin-Crypto/SatoshiCoin-rebrand/releases/download/v1.0.2.1/ubuntu16.04-daemon.zip.tar.gz
 			
 #Install Latest
 echo '==========================================================================='
-echo 'Extract new methuselah: \n# tar -xvzf mag-1.0.0-x86_64-linux-gnu.tar.gz -C /usr/local/bin' && tar -xvzf mag-1.0.0-x86_64-linux-gnu.tar.gz -C /usr/local/bin
+echo 'Extract new Satoshi Coin Masternode : \n# tar -xvzf ubuntu16.04-daemon.zip.tar.gz -C /usr/local/bin' && tar -xvzf ubuntu16.04-daemon.zip.tar.gz -C /usr/local/bin
 
-rm tar -xvzf mag-1.0.0-x86_64-linux-gnu.tar.gz
+rm tar -xvzf ubuntu16.04-daemon.zip.tar.gz
 
 # our new mnode unpriv user acc is added
 if id "sap" >/dev/null 2>&1; then
@@ -151,7 +151,7 @@ for NUM in $(seq 1 ${count}); do
     if [ ! -d "$BASE"/multinode/SAP_"${NUM}" ]; then
         echo "creating data directory $BASE/multinode/SAP_${NUM}" 
         mkdir -p "$BASE"/multinode/SAP_"${NUM}" 
-		#Generating Random Password for Mag JSON RPC
+		#Generating Random Password for Satc JSON RPC
 		USER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 		USERPASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 		read -e -p "MasterNode Key for SAP_"${NUM}": " MKey
@@ -161,6 +161,7 @@ rpcpassword=$USERPASS
 server=1
 daemon=1
 listen=1
+printtoconsole=1
 maxconnections=256
 masternode=1
 masternodeprivkey=$MKey
@@ -207,25 +208,25 @@ addnode=18.218.202.198
 addnode=185.33.146.5
 addnode=207.148.100.16
 addnode=46.101.11.88
-addnode=18.224.189.123	" |sudo tee -a "$BASE"/multinode/SAP_"${NUM}"/mag.conf >/dev/null
-echo 'bind=192.168.1.'"${NUM}"':'"$PORT" >> "$BASE"/multinode/SAP_"${NUM}"/mag.conf
-echo 'rpcport=8119'"${NUM}" >> "$BASE"/multinode/SAP_"${NUM}"/mag.conf
+addnode=18.224.189.123	" |sudo tee -a "$BASE"/multinode/SAP_"${NUM}"/satc.conf >/dev/null
+echo 'bind=192.168.1.'"${NUM}"':'"$PORT" >> "$BASE"/multinode/SAP_"${NUM}"/satc.conf
+echo 'rpcport=8119'"${NUM}" >> "$BASE"/multinode/SAP_"${NUM}"/satc.conf
 
 echo 'ip addr del 192.168.1.'"${NUM}"'/32 dev '"$dev2"':'"${NUM}" >> start_multinode.sh
 echo 'ip addr add 192.168.1.'"${NUM}"'/32 dev '"$dev2"':'"${NUM}" >> start_multinode.sh
-echo "runuser -l sap -c 'magd -daemon -pid=$BASE/multinode/SAP_${NUM}/mag.pid -conf=$BASE/multinode/SAP_${NUM}/mag.conf -datadir=$BASE/multinode/SAP_${NUM}'" >> start_multinode.sh
+echo "runuser -l sap -c 'satcd -daemon -pid=$BASE/multinode/SAP_${NUM}/satc.pid -conf=$BASE/multinode/SAP_${NUM}/satc.conf -datadir=$BASE/multinode/SAP_${NUM}'" >> start_multinode.sh
 
 echo 'ip addr del 192.168.1.'"${NUM}"'/32 dev '"$dev2"':'"${NUM}" >> stop_multinode.sh
-echo "mag-cli -conf=$BASE/multinode/SAP_${NUM}/mag.conf -datadir=$BASE/multinode/SAP_${NUM} stop" >> stop_multinode.sh
+echo "satc-cli -conf=$BASE/multinode/SAP_${NUM}/satc.conf -datadir=$BASE/multinode/SAP_${NUM} stop" >> stop_multinode.sh
 
 echo "echo '====================================================${NUM}========================================================================'" >> mn_status.sh
-echo "mag-cli -conf=$BASE/multinode/SAP_${NUM}/mag.conf -datadir=$BASE/multinode/SAP_${NUM} masternode status" >> mn_status.sh
+echo "satc-cli -conf=$BASE/multinode/SAP_${NUM}/satc.conf -datadir=$BASE/multinode/SAP_${NUM} masternode status" >> mn_status.sh
 
 echo "echo '====================================================${NUM}========================================================================'" >> mn_getinfo.sh
-echo "mag-cli -conf=$BASE/multinode/SAP_${NUM}/mag.conf -datadir=$BASE/multinode/SAP_${NUM} getinfo" >> mn_getinfo.sh
+echo "satc-cli -conf=$BASE/multinode/SAP_${NUM}/satc.conf -datadir=$BASE/multinode/SAP_${NUM} getinfo" >> mn_getinfo.sh
 # When Blocks are synched, it copies the wallet into the remaining Mns Wallet automatically
 echo "echo 'stop MN${NUM}'"
-    echo "mag-cli -conf=$BASE/multinode/SAP_${NUM}/mag.conf -datadir=$BASE/multinode/SAP_${NUM} stop" >> mn_sync_block.sh
+    echo "satc-cli -conf=$BASE/multinode/SAP_${NUM}/satc.conf -datadir=$BASE/multinode/SAP_${NUM} stop" >> mn_sync_block.sh
     if (( ${NUM} > 1)) ; then
         echo "echo 'copy MN1 blocks folder into masternode ${NUM}'" >> mn_sync_block.sh
         echo "sudo yes | cp -R $BASE/multinode/SAP_1/blocks/ $BASE/multinode/SAP_${NUM}/blocks" >> mn_sync_block.sh
