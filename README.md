@@ -1,5 +1,5 @@
-# Mag-multi-masternode
-Mag multi masternode(this is not the official script , use at your own risk)
+# Satc-multi-masternode
+Satc multi masternode(this is not the official script , use at your own risk)
 
 ```bash
 git clone https://github.com/jcww247/Satc-multi-masternode
@@ -33,7 +33,7 @@ reminder that if you restart your VPS you need to use the above command to start
 script base on many individuals that have helped with this script.
 
 # Donation
-MAG address: Coming Soon
+SATC address: Coming Soon
 
 # Be Generours, Share More to Earn More :)
 BTC  address: 
