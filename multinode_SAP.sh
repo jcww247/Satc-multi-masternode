@@ -117,9 +117,9 @@ echo 'Downloading latest version:  wget https://github.com/SatoshiCoin-Crypto/Sa
 			
 #Install Latest
 echo '==========================================================================='
-echo 'Extract new Satoshi Coin Masternode : \n# tar -xvzf ubuntu16.04-daemon.zip.tar.gz -C /usr/local/bin' && tar -xvzf ubuntu16.04-daemon.zip.tar.gz -C /usr/local/bin
+echo 'Extract new Satoshi Coin Masternode : \n# tar -xf ubuntu16.04-daemon.zip.tar.gz -C /usr/local/bin' && tar -xf ubuntu16.04-daemon.zip.tar.gz -C /usr/local/bin
 
-tar -xvzf ubuntu16.04-daemon.zip.tar.gz
+rm ubuntu16.04-daemon.zip.tar.gz
 
 # our new mnode unpriv user acc is added
 if id "sap" >/dev/null 2>&1; then
