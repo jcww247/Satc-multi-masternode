@@ -113,11 +113,11 @@ echo -e "Installing and setting up firewall to allow ingress on port 8120"
   echo "y" | ufw enable >/dev/null 2>&1
 
 #Download Latest
-echo 'Downloading latest version:  wget https://github.com/SatoshiCoin-Crypto/SatoshiCoin-rebrand/releases/download/v1.0.2.1/ubuntu16.04-daemon.zip.tar.gz' &&  wget https://github.com/SatoshiCoin-Crypto/SatoshiCoin-rebrand/releases/download/v1.0.2.1/ubuntu16.04-daemon.zip.tar.gz
+echo 'Downloading latest version:  wget https://github.com/SatoshiCoin-Crypto/SatoshiCoin-rebrand/releases/download/v1.0.2.1/ubuntu16.04-daemon.zip' &&  wget https://github.com/SatoshiCoin-Crypto/SatoshiCoin-rebrand/releases/download/v1.0.2.1/ubuntu16.04-daemon.zip
 			
 #Install Latest
 echo '==========================================================================='
-echo 'Extract new Satoshi Coin Masternode : \n# tar -xf ubuntu16.04-daemon.zip.tar.gz -C /usr/local/bin' && tar -xf ubuntu16.04-daemon.zip.tar.gz -C /usr/local/bin
+echo 'Extract new Satoshi Coin Masternode : \n# unzip -xf ubuntu16.04-daemon.zip -C /usr/local/bin' && tar -xf ubuntu16.04-daemon.zip -C /usr/local/bin
 
 rm ubuntu16.04-daemon.zip.tar.gz
 
